@@ -148,7 +148,7 @@ func (m model) View() string {
 			cursor = Red + ">" + Reset + Green
 		}
 		if m.selected == choice {
-			postfix = Green + "✔" + Reset + Green
+			postfix = Green + "✔" + Reset
 		}
 		menu += fmt.Sprintf("%s %s %s\n", cursor, choice+Reset, postfix)
 	}
