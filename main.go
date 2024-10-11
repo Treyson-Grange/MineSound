@@ -5,10 +5,9 @@ import (
 	"log"
 	"math/rand"
 	"os"
-	"time"
-	"strings"
-	"io/ioutil"
 	"strconv"
+	"strings"
+	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/faiface/beep"
@@ -17,14 +16,14 @@ import (
 )
 
 // Color Vars
-var Reset = "\033[0m" 
-var Red = "\033[31m" 
+var Reset = "\033[0m"
+var Red = "\033[31m"
 var Green = "\033[38;5;22m"
-var Yellow = "\033[33m" 
-var Blue = "\033[34m" 
-var Magenta = "\033[35m" 
-var Cyan = "\033[36m" 
-var Gray = "\033[37m" 
+var Yellow = "\033[33m"
+var Blue = "\033[34m"
+var Magenta = "\033[35m"
+var Cyan = "\033[36m"
+var Gray = "\033[37m"
 var White = "\033[97m"
 
 // Timing Variables | default 1-10 seconds
@@ -32,15 +31,15 @@ var Minimum = 1
 var Maximum = 10
 
 // Spacing Vars
-var Padding = "\n\n\n\n\n\n\n\n\n\n"// can you tell I don't know golang?
+var Padding = "\n\n\n\n\n\n\n\n\n\n" // can you tell I don't know golang?
 
 // Global channel for stopping sound playback
 var stopChannel chan bool
 
 /**
-	* Main function to start the program
-	* big ole init function
-*/
+* Main function to start the program
+* big ole init function
+ */
 func main() {
 	if len(os.Args) > 2 {
 		min, err := strconv.Atoi(os.Args[1])
@@ -60,7 +59,7 @@ func main() {
 	stopChannel = make(chan bool)
 	p := tea.NewProgram(initialModel())
 
-	if err := p.Start(); err != nil {
+	if err, _ := p.Run(); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -70,9 +69,9 @@ func (m model) Init() tea.Cmd {
 }
 
 /**
-	* Model struct to hold the state of the program
-	* State changes? Change here.
-*/
+* Model struct to hold the state of the program
+* State changes? Change here.
+ */
 type model struct {
 	choices   []string
 	cursor    int
@@ -83,21 +82,21 @@ type model struct {
 
 func initialModel() model {
 	return model{
-		choices: []string{"Cave", "Mobs", "Thunder"},
-		cursor:  0,
+		choices:   []string{"Cave", "Mobs", "Thunder"},
+		cursor:    0,
 		isPlaying: false,
 		mp3Counts: map[string]int{
-			"Cave": 18,
-			"Mobs": 2,
+			"Cave":    18,
+			"Mobs":    2,
 			"Thunder": 7,
 		},
 	}
 }
 
-/** 
-  	* Update function to handle user input
-	* User input? Change here.
-*/
+/**
+* Update function to handle user input
+* User input? Change here.
+ */
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
@@ -116,7 +115,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 		case "enter":
-			if m.isPlaying {stopChannel <- true}
+			if m.isPlaying {
+				stopChannel <- true
+			}
 			m.selected = m.choices[m.cursor]
 			m.isPlaying = true
 			return m, playMP3Cmd(m.selected, m.mp3Counts)
@@ -126,26 +127,30 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
-/** 
- 	* View function to display the menu, and overall UI
- 	* Visual changes? Change here.
-*/
+/**
+* View function to display the menu, and overall UI
+* Visual changes? Change here.
+ */
 func (m model) View() string {
 	var menu string
 
-	content, err := ioutil.ReadFile("ascii/logo.txt")
+	content, err := os.ReadFile("ascii/logo.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
-	menu += fmt.Sprintf(Padding + "\n\n%s\n\n", Green + string(content) + Reset)
+	menu += fmt.Sprintf(Padding+"\n\n%s\n\n", Green+string(content)+Reset)
 	menu += "\nBy Treyson Grange\n\nTo start the program, choose a sound stage to play.\n"
 
 	for i, choice := range m.choices {
 		cursor := " "
+		postfix := " "
 		if m.cursor == i {
 			cursor = Red + ">" + Reset + Green
 		}
-		menu += fmt.Sprintf("%s %s\n", cursor, choice + Reset)
+		if m.selected == choice {
+			postfix = Green + "✔" + Reset + Green
+		}
+		menu += fmt.Sprintf("%s %s %s\n", cursor, choice+Reset, postfix)
 	}
 
 	if m.cursor == 0 {
@@ -154,26 +159,16 @@ func (m model) View() string {
 		menu += fmt.Sprintf("\n%s\n", "Scariest mob sounds (spooky)\n")
 	} else if m.cursor == 2 {
 		menu += fmt.Sprintf("\n%s\n", "Thunderstorm/Rain sounds\n")
-	} 
+	}
 	// More coming, finding more sounds is rough.
 
 	return fmt.Sprintf(menu + Padding)
 }
 
 /**
-	* Helper functions to play random MP3 files
-	* MP3 System changes? Here it is.
-*/
-func (m model) getRandomMP3(choice string) string {
-	count := m.mp3Counts[choice]
-	if count == 0 {
-		return ""
-	}
-
-	fileIndex := rand.Intn(count) + 1
-	return fmt.Sprintf("mp3/%s/%d.mp3", strings.ToLower(choice), fileIndex)
-}
-
+* Helper functions to play random MP3 files
+* MP3 System changes? Here it is.
+ */
 func getRandomMP3(choice string, mp3Counts map[string]int) string {
 	count := mp3Counts[choice]
 	if count == 0 {
@@ -188,7 +183,7 @@ func playMP3Cmd(selectedChoice string, mp3Counts map[string]int) tea.Cmd {
 		if stopChannel != nil {
 			select {
 			case stopChannel <- true:
-			default: 
+			default:
 			}
 		}
 
@@ -207,9 +202,9 @@ func playMP3Cmd(selectedChoice string, mp3Counts map[string]int) tea.Cmd {
 				}
 
 				select {
-					case <-stopChannel:
-						return
-					case <-time.After(time.Duration(rand.Intn(Maximum)+Minimum) * time.Second):
+				case <-stopChannel:
+					return
+				case <-time.After(time.Duration(rand.Intn(Maximum)+Minimum) * time.Second):
 				}
 			}
 		}()

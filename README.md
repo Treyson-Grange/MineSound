@@ -23,3 +23,8 @@ The scariest thing of all! No installation instructions! ooooooOOoooooOOOooooh y
 ## Credits
 
 - Minecraft, obviously.
+
+## TODO
+
+- [ ] Get rid of the rain sounds, theyre too short and kinda dumb.
+- [ ]
