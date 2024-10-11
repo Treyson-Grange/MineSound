@@ -88,7 +88,7 @@ func initialModel() model {
 		mp3Counts: map[string]int{
 			"Cave":    18,
 			"Mobs":    2,
-			"Thunder": 7,
+			"Thunder": 3,
 		},
 	}
 }

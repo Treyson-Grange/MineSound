@@ -26,5 +26,6 @@ The scariest thing of all! No installation instructions! ooooooOOoooooOOOooooh y
 
 ## TODO
 
-- [ ] Get rid of the rain sounds, theyre too short and kinda dumb.
-- [ ]
+- [x] Get rid of the rain sounds, theyre too short and kinda dumb.
+- [ ] Use cobra as a command system, further spread out my code as it grows.
+- [ ] Screenie
