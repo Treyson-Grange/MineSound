@@ -1,0 +1,25 @@
+# Ignore binary files
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Ignore test binary
+*_test
+
+# Ignore vendor directory if not using vendoring
+/vendor/
+
+# Ignore editor-specific files
+*.swp
+*.swo
+.idea/
+.vscode/
+*.log
+*.tmp
+
+# Other common ignore patterns
+node_modules/
+.DS_Store
+
