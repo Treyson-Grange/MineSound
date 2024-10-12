@@ -1,5 +1,9 @@
 # Ladies! Gentlemen! Both, and neither!
 
+## MineSound
+
+![GIF of MineSound interface](assets/giffy.gif)
+
 This is the dumbest thing I have ever programmed. Be warned.
 
 I am in a big minecraft mood currently, and I constantly forget, Minecraft is terrifying. So many erie sounds that keep me on my toes. It keeps me attentive. Minecraft keeps my attention for hours on end, and with my ADHD like brain, that is impressive. I theorize that this effect comes from the soundtrack. (the sound design in general.) If I can keep the same attentive prowess in my minecraft playthrough, while I, I don't know, work? I think I will reach new levels of productivity.
