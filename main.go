@@ -73,22 +73,30 @@ func (m model) Init() tea.Cmd {
 * State changes? Change here.
  */
 type model struct {
-	choices   []string
-	cursor    int
-	selected  string
-	isPlaying bool
-	mp3Counts map[string]int
+	choices     []string
+	choicesText map[string]string
+	cursor      int
+	selected    string
+	isPlaying   bool
+	mp3Counts   map[string]int
 }
 
 func initialModel() model {
 	return model{
-		choices:   []string{"Cave", "Mobs", "Thunder"},
+		choices: []string{"Cave", "Mobs", "Thunder", "Basaltdelta"},
+		choicesText: map[string]string{
+			"Cave":        "Classic minecraft cave scares!",
+			"Mobs":        "Scariest mob sounds (spooky)",
+			"Thunder":     "Thunderstorm/Rain sounds",
+			"Basaltdelta": "Sounds from the Basalt Delta",
+		},
 		cursor:    0,
 		isPlaying: false,
 		mp3Counts: map[string]int{
-			"Cave":    18,
-			"Mobs":    2,
-			"Thunder": 3,
+			"Cave":        18,
+			"Mobs":        5,
+			"Thunder":     3,
+			"Basaltdelta": 1,
 		},
 	}
 }
@@ -153,16 +161,9 @@ func (m model) View() string {
 		menu += fmt.Sprintf("%s %s %s\n", cursor, choice+Reset, postfix)
 	}
 
-	if m.cursor == 0 {
-		menu += fmt.Sprintf("\n%s\n", "Classic minecraft cave scares!\n")
-	} else if m.cursor == 1 {
-		menu += fmt.Sprintf("\n%s\n", "Scariest mob sounds (spooky)\n")
-	} else if m.cursor == 2 {
-		menu += fmt.Sprintf("\n%s\n", "Thunderstorm/Rain sounds\n")
-	}
-	// More coming, finding more sounds is rough.
+	menu += "\n" + m.choicesText[m.choices[m.cursor]] + "\n\n"
 
-	return fmt.Sprintf(menu + Padding)
+	return fmt.Sprint(menu + Padding)
 }
 
 /**

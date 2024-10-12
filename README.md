@@ -20,12 +20,22 @@ The scariest thing of all! No installation instructions! ooooooOOoooooOOOooooh y
 - Select an option with enter.
 - Feel free to change your selection at any time.
 
+## Care to expand?
+
+Feel free. If you want to add a soundscape option, these are the steps.
+
+1. Gather mp3s. The point of this program is to be spooky. Keep that in mind.
+   1. For ease of access, all mp3s must be named x.mp3 where x is 1-# of mp3s.
+2. Put them in a sub directory of the mp3 directory.
+3. Naming matters here. The name of the directory must match the code.
+4. Everything you need to change is in the initialModel.
+   1. Add a string to the `choices` array
+   2. Add a description of this choice to the `choicesText` mapping.
+   3. Add the number of mp3s that you added.
+5. On rerun, your option will appear.
+
+For any other changes, you'll have to fend for yourself.
+
 ## Credits
 
-- Minecraft, obviously.
-
-## TODO
-
-- [x] Get rid of the rain sounds, theyre too short and kinda dumb.
-- [ ] Use cobra as a command system, further spread out my code as it grows.
-- [ ] Screenie
+- [Minecraft](https://www.minecraft.net/en-us), obviously.
