@@ -1,4 +1,4 @@
-module example.com/mymodule
+module example.com/minesound
 
 go 1.14
 
