@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/Delta456/box-cli-maker/v2"
 	tea "github.com/charmbracelet/bubbletea"
 )
 
@@ -23,9 +24,6 @@ var White = "\033[97m"
 // Timing Variables | default 1-10 seconds
 var Minimum = 1
 var Maximum = 10
-
-// Spacing Vars
-var Padding = "\n\n\n\n\n\n\n\n\n\n" // can you tell I don't know golang?
 
 // Global channel for stopping sound playback
 var stopChannel chan bool
@@ -73,6 +71,7 @@ type model struct {
 	selected    string
 	isPlaying   bool
 	mp3Counts   map[string]int
+	boxConfig   box.Config
 }
 
 func initialModel() model {
@@ -92,6 +91,7 @@ func initialModel() model {
 			"Thunder":     3,
 			"Basaltdelta": 9,
 		},
+		boxConfig: box.Config{Px: 5, Py: 2, Type: "Single", TitlePos: "Inside", Color: "White"},
 	}
 }
 
@@ -122,7 +122,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 			m.selected = m.choices[m.cursor]
 			m.isPlaying = true
-			return m, playMP3Cmd(m.selected, m.mp3Counts)
+			return m, PlayMP3Cmd(m.selected, m.mp3Counts)
 		}
 	}
 
@@ -140,22 +140,23 @@ func (m model) View() string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	menu += fmt.Sprintf(Padding+"\n\n%s\n\n", Green+string(content)+Reset)
-	menu += "\nBy Treyson Grange\n\nTo start the program, choose a sound stage to play.\n"
+	logo := Green + string(content) + Reset
+	menu += "To start the program, choose a sound stage to play.\n"
 
 	for i, choice := range m.choices {
 		cursor := " "
 		postfix := " "
 		if m.cursor == i {
-			cursor = Red + ">" + Reset + Green
+			cursor = Red + ">" + Reset
 		}
 		if m.selected == choice {
 			postfix = Green + "✔" + Reset
 		}
-		menu += fmt.Sprintf("%s %s %s\n", cursor, choice+Reset, postfix)
+		menu += fmt.Sprintf("%s %s %s\n", cursor, choice, postfix)
 	}
 
-	menu += "\n" + m.choicesText[m.choices[m.cursor]] + "\n\n"
+	menu += "\n" + m.choicesText[m.choices[m.cursor]]
+	boxNew := box.Box{TopRight: "*", TopLeft: "*", BottomRight: "*", BottomLeft: "*", Horizontal: "-", Vertical: "|", Config: m.boxConfig}
 
-	return fmt.Sprint(menu + Padding)
+	return fmt.Sprint(logo + boxNew.String("By Treyson Grange", menu))
 }

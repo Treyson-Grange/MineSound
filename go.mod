@@ -3,6 +3,7 @@ module example.com/minesound
 go 1.14
 
 require (
+	github.com/Delta456/box-cli-maker/v2 v2.3.0
 	github.com/charmbracelet/bubbletea v1.1.1
 	github.com/faiface/beep v1.1.0
 	github.com/hajimehoshi/go-mp3 v0.3.4 // indirect

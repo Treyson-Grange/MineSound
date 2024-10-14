@@ -18,7 +18,7 @@ import (
 * Helper functions to play random MP3 files
 * MP3 System changes? Here it is.
  */
-func playMP3Cmd(selectedChoice string, mp3Counts map[string]int) tea.Cmd {
+func PlayMP3Cmd(selectedChoice string, mp3Counts map[string]int) tea.Cmd {
 	return func() tea.Msg {
 		if stopChannel != nil {
 			select {
